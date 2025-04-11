@@ -1,5 +1,5 @@
+import { Button, Flex } from "antd";
 import { useMemo } from "react";
-import { cn } from "../../cn";
 import students from "../../data/students.json";
 import { useParams } from "../../router";
 import { Work } from "../../types";
@@ -7,45 +7,42 @@ import { useStore } from "../store";
 
 export default function WorkPage() {
   const { id } = useParams("/work/:id");
-  const [storeData, setStoreData] = useStore<Work[]>("works", []);
-  const data = useMemo(() => {
-    console.log(storeData);
-    return storeData.find((value) => value.id === id)?.data || [];
-  }, [id, storeData]);
-  const setData = (value: boolean[]) => {
-    setStoreData(
-      storeData.map((item) =>
-        item.id === id ? { ...item, data: value } : item,
-      ),
-    );
-  };
+  const [works, setWorks] = useStore<Work[]>("works", []);
+  const work = useMemo(() => works.find((work) => work.id === id), [id, works]);
 
   return (
-    <div className="flex h-full flex-1 items-center justify-center rounded-md bg-slate-900 p-2">
-      <div className="grid grid-cols-6 gap-4">
-        {data.map((value, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div
-              className={cn(
-                "flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-600 transition duration-500",
-                {
-                  "bg-green-600": value,
-                },
-              )}
-              onClick={() =>
-                setData([
-                  ...data.slice(0, index),
-                  !data[index],
-                  ...data.slice(index + 1),
-                ])
-              }
-            >
-              {index + 1}
-            </div>
-            <span>{students[index]}</span>
-          </div>
+    <Flex justify="center" align="center" style={{ height: "100%" }}>
+      <Flex
+        justify="center"
+        align="center"
+        wrap
+        gap={16}
+        style={{ maxWidth: 700 }}
+      >
+        {work?.data.map((value, index) => (
+          <Button
+            size="large"
+            color={value ? "green" : "red"}
+            variant={value ? "outlined" : "solid"}
+            autoInsertSpace={false}
+            onClick={() => {
+              setWorks(
+                works.map((work) => {
+                  if (work.id === id) {
+                    return {
+                      ...work,
+                      data: work.data.map((v, i) => (i === index ? !v : v)),
+                    };
+                  }
+                  return work;
+                })
+              );
+            }}
+          >
+            {index + 1} {students[index]}
+          </Button>
         ))}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

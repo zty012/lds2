@@ -10,27 +10,21 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
     "@generouted/react-router": "^1.19.9",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-shell": "^2",
     "@tauri-apps/plugin-store": "~2",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.454.0",
+    "antd": "^5.24.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.28.0",
-    "tailwind-merge": "^2.5.4"
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.8",
-    "tailwindcss": "^3.4.14",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   }
