@@ -67,7 +67,7 @@ export default function MyMenu() {
             {
               id: crypto.randomUUID(),
               title: newWorkName,
-              data: Array.from({ length: students.length }, () => false),
+              data: Array.from({ length: students.length }, () => true),
             },
           ]);
           setNewWorkName("");

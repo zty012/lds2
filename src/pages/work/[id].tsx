@@ -1,5 +1,6 @@
 import { Button, Flex } from "antd";
 import { useMemo } from "react";
+import { useWindowSize } from "react-use";
 import students from "../../data/students.json";
 import { useParams } from "../../router";
 import { Work } from "../../types";
@@ -9,6 +10,7 @@ export default function WorkPage() {
   const { id } = useParams("/work/:id");
   const [works, setWorks] = useStore<Work[]>("works", []);
   const work = useMemo(() => works.find((work) => work.id === id), [id, works]);
+  const windowSize = useWindowSize();
 
   return (
     <Flex justify="center" align="center" style={{ height: "100%" }}>
@@ -17,7 +19,7 @@ export default function WorkPage() {
         align="center"
         wrap
         gap={16}
-        style={{ maxWidth: 700 }}
+        style={{ maxWidth: "70%" }}
       >
         {work?.data.map((value, index) => (
           <Button
@@ -37,6 +39,9 @@ export default function WorkPage() {
                   return work;
                 })
               );
+            }}
+            style={{
+              zoom: windowSize.height / 32 / 20,
             }}
           >
             {index + 1} {students[index]}
