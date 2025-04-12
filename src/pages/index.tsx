@@ -36,8 +36,7 @@ export default function Home() {
         </Col>
         <Col span={24}>
           <Card title="更新内容">
-            <p>新建作业改为默认全绿</p>
-            <p>按钮大小根据窗口大小自适应</p>
+            <p>页面上方显示作业名称</p>
           </Card>
         </Col>
       </Row>

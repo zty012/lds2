@@ -1,4 +1,4 @@
-import { Button, Flex } from "antd";
+import { Button, Flex, Typography } from "antd";
 import { useMemo } from "react";
 import { useWindowSize } from "react-use";
 import students from "../../data/students.json";
@@ -13,7 +13,10 @@ export default function WorkPage() {
   const windowSize = useWindowSize();
 
   return (
-    <Flex justify="center" align="center" style={{ height: "100%" }}>
+    <Flex justify="center" align="center" vertical style={{ height: "100%" }}>
+      <Typography.Title style={{ fontSize: 48 }}>
+        {work?.title}
+      </Typography.Title>
       <Flex
         justify="center"
         align="center"
