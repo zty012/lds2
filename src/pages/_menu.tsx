@@ -62,16 +62,18 @@ export default function MyMenu() {
         title="新建作业"
         onCancel={() => setOpenNewWorkModal(false)}
         onOk={() => {
+          const id = crypto.randomUUID();
           setWorks([
             ...works,
             {
-              id: crypto.randomUUID(),
+              id,
               title: newWorkName,
               data: Array.from({ length: students.length }, () => true),
             },
           ]);
           setNewWorkName("");
           setOpenNewWorkModal(false);
+          navigate(`/work/${id}`);
         }}
       >
         <Input
