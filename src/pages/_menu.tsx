@@ -13,6 +13,21 @@ export default function MyMenu() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const onModalOk = () => {
+    const id = crypto.randomUUID();
+    setWorks([
+      ...works,
+      {
+        id,
+        title: newWorkName,
+        data: Array.from({ length: students.length }, () => true),
+      },
+    ]);
+    setNewWorkName("");
+    setOpenNewWorkModal(false);
+    navigate(`/work/${id}`);
+  };
+
   return (
     <>
       <Menu
@@ -61,25 +76,17 @@ export default function MyMenu() {
         width={300}
         title="新建作业"
         onCancel={() => setOpenNewWorkModal(false)}
-        onOk={() => {
-          const id = crypto.randomUUID();
-          setWorks([
-            ...works,
-            {
-              id,
-              title: newWorkName,
-              data: Array.from({ length: students.length }, () => true),
-            },
-          ]);
-          setNewWorkName("");
-          setOpenNewWorkModal(false);
-          navigate(`/work/${id}`);
-        }}
+        onOk={onModalOk}
       >
         <Input
           placeholder="作业名称"
           value={newWorkName}
           onChange={(e) => setNewWorkName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onModalOk();
+            }
+          }}
         />
       </Modal>
     </>

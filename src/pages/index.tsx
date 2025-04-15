@@ -36,9 +36,7 @@ export default function Home() {
         </Col>
         <Col span={24}>
           <Card title="更新内容">
-            <p>修改页面布局</p>
-            <p>新建作业后自动跳转到作业页面</p>
-            <p>右下角显示未交作业数量</p>
+            <p>回车创建作业</p>
           </Card>
         </Col>
       </Row>
