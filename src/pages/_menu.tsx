@@ -1,5 +1,11 @@
-import { DeleteOutlined, HomeOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Input, Menu, Modal, Popconfirm } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  HomeOutlined,
+  MoreOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import { Button, Dropdown, Input, Menu, Modal } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import students from "../data/students.json";
@@ -8,24 +14,42 @@ import { useStore } from "./store";
 
 export default function MyMenu() {
   const [works, setWorks] = useStore<Work[]>("works", []);
-  const [openNewWOrkModal, setOpenNewWorkModal] = useState(false);
-  const [newWorkName, setNewWorkName] = useState("");
+  const [openNewWorkModal, setOpenNewWorkModal] = useState(false);
+  const [openRenameModal, setOpenRenameModal] = useState(false);
+  const [renameWorkId, setRenameWorkId] = useState("");
+  const [modalInputValue, setModalInputValue] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onModalOk = () => {
+  const onNewWorkModalOk = () => {
     const id = crypto.randomUUID();
     setWorks([
       ...works,
       {
         id,
-        title: newWorkName,
+        title: modalInputValue,
         data: Array.from({ length: students.length }, () => true),
       },
     ]);
-    setNewWorkName("");
+    setModalInputValue("");
     setOpenNewWorkModal(false);
     navigate(`/work/${id}`);
+  };
+
+  const onRenameWorkModalOk = () => {
+    setWorks(
+      works.map((work) => {
+        if (work.id === renameWorkId) {
+          return {
+            ...work,
+            title: modalInputValue,
+          };
+        }
+        return work;
+      })
+    );
+    setModalInputValue("");
+    setOpenRenameModal(false);
   };
 
   return (
@@ -53,38 +77,91 @@ export default function MyMenu() {
             label: work.title,
             onClick: () => navigate(`/work/${work.id}`),
             extra: (
-              <Popconfirm
-                title="删除作业"
-                description="确认删除该作业？"
-                onConfirm={() => {
-                  setWorks(works.filter((w) => w.id !== work.id));
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      label: "重命名",
+                      key: "rename",
+                      icon: <EditOutlined />,
+                      onClick: () => {
+                        setRenameWorkId(work.id);
+                        setOpenRenameModal(true);
+                      },
+                    },
+                    {
+                      label: "删除",
+                      key: "delete",
+                      icon: <DeleteOutlined />,
+                      style: { color: "red" },
+                      onClick: () => {
+                        setWorks(works.filter((w) => w.id !== work.id));
+                      },
+                    },
+                  ],
                 }}
               >
                 <Button
                   variant="text"
-                  color="danger"
-                  icon={<DeleteOutlined />}
+                  type="text"
+                  icon={<MoreOutlined />}
                   style={{ marginRight: -12 }}
                 />
-              </Popconfirm>
+              </Dropdown>
             ),
           })),
         ]}
       />
       <Modal
-        open={openNewWOrkModal}
+        open={openNewWorkModal}
         width={300}
         title="新建作业"
-        onCancel={() => setOpenNewWorkModal(false)}
-        onOk={onModalOk}
+        onCancel={() => {
+          setOpenNewWorkModal(false);
+          setModalInputValue("");
+        }}
+        onOk={onNewWorkModalOk}
       >
         <Input
           placeholder="作业名称"
-          value={newWorkName}
-          onChange={(e) => setNewWorkName(e.target.value)}
+          value={modalInputValue}
+          onChange={(e) => setModalInputValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              onModalOk();
+              onNewWorkModalOk();
+            }
+          }}
+        />
+      </Modal>
+      <Modal
+        open={openRenameModal}
+        width={300}
+        title="重命名"
+        onCancel={() => {
+          setOpenRenameModal(false);
+          setModalInputValue("");
+        }}
+        onOk={() => {
+          setWorks(
+            works.map((work) =>
+              work.id === renameWorkId
+                ? {
+                    ...work,
+                    title: modalInputValue,
+                  }
+                : work
+            )
+          );
+          setOpenRenameModal(false);
+        }}
+      >
+        <Input
+          placeholder="作业名称"
+          value={modalInputValue}
+          onChange={(e) => setModalInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onRenameWorkModalOk();
             }
           }}
         />

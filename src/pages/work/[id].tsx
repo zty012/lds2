@@ -72,6 +72,7 @@ export default function WorkPage() {
           bottom: 16,
           right: 16,
           color: work?.data.filter((value) => !value).length ? "red" : "green",
+          fontSize: windowSize.height / 32,
         }}
       >
         未交数量：{work?.data.filter((value) => !value).length}

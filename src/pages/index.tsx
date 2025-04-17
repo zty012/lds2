@@ -36,7 +36,7 @@ export default function Home() {
         </Col>
         <Col span={24}>
           <Card title="更新内容">
-            <p>回车创建作业</p>
+            <p>支持重命名作业</p>
           </Card>
         </Col>
       </Row>
